@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "llm-playground"
+version = "0.1.0"
+description = ""
+authors = ["Your Name <you@example.com>"]
+readme = "README.md"
+packages = [{include = "llm_playground"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+openai = "^0.28.1"
+langchain = {extras = ["openai"], version = "^0.0.306"}
+sparqlwrapper = "^2.0.0"
+loguru = "^0.7.2"
+
+[tool.poetry.group.dev.dependencies]
+ipykernel = "^6.25.2"
+sparqlkernel = "^1.3.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

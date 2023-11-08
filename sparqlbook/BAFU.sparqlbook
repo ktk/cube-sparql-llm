@@ -1,0 +1,50 @@
+[
+  {
+    "kind": 1,
+    "language": "markdown",
+    "value": "# BAFU LLM Workflow\n\nPlease read the RDF Cube Schema described at https://cube.link/ for details about the base structure.\n\n## List all Cubes\n\nList all cubes that are published by BAFU. We remove the expired ones (they are versioned).\n\nNote that this step can be skipped in the first version. In the end it decides which cube we want to use.",
+    "metadata": {}
+  },
+  {
+    "kind": 2,
+    "language": "sparql",
+    "value": "PREFIX cube: <https://cube.link/>\nPREFIX sh: <http://www.w3.org/ns/shacl#>\nPREFIX schema: <http://schema.org/>\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX dct: <http://purl.org/dc/terms/>\n\nSELECT ?cube ?label\n#FROM <https://lindas.admin.ch/stadtzuerich/stat>\nWHERE {\n\n  ?cube a cube:Cube ;\n        schema:name ?label ;\n        dct:creator <https://register.ld.admin.ch/opendataswiss/org/bundesamt-fur-umwelt-bafu> .\n\n  FILTER(lang(?label) = 'en')\n\n  MINUS {\n    ?cube schema:expires ?date .\n  }\n}\nLIMIT 10",
+    "metadata": {}
+  },
+  {
+    "kind": 1,
+    "language": "markdown",
+    "value": "## Get metadata for a cube\n\nWe can get additional metadata for the cube. This can be useful for selection as well as it gives more hints\nabout what cubes we have in the first place.\n\nThe first query gets the labels of the dimensions. That might be useful as input for the LLM to choose the cube.",
+    "metadata": {}
+  },
+  {
+    "kind": 2,
+    "language": "sparql",
+    "value": "PREFIX cube: <https://cube.link/>\nPREFIX sh: <http://www.w3.org/ns/shacl#>\nPREFIX schema: <http://schema.org/>\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX qudt: <http://qudt.org/schema/qudt/>\n\nSELECT ?dimensions ?dimensionsLabel ?type ?scaleType\nWHERE {\n  \n  VALUES ?cube { <https://environment.ld.admin.ch/foen/ubd000502/4> }\n  \n  ?cube a cube:Cube ;\n        cube:observationConstraint ?shape .\n  \n   ?shape a cube:Constraint;\n         sh:property ?property .\n         \n   ?property sh:path ?dimensions ;\n    a ?type ;\n    qudt:scaleType ?scaleType ;\n    schema:name ?dimensionsLabel .\n\nFILTER( lang(?dimensionsLabel) = 'en')\n\n# TODO for some reason those do not have IRIs?\n# I think this is different to what we do in Zurich\n#   ?dimensions schema:name ?dimensionsLabel .\n  #FILTER( ?dimensions NOT IN ( <https://ld.stadt-zuerich.ch/statistics/property/TIME>, <http://www.w3.org/1999/02/22-rdf-syntax-ns#type>))\n   \n} \nLIMIT 10",
+    "metadata": {}
+  },
+  {
+    "kind": 1,
+    "language": "markdown",
+    "value": "We can for a particular dimension also fetch all instances of that dimension & its labels. That might be necessary for filtering.",
+    "metadata": {}
+  },
+  {
+    "kind": 2,
+    "language": "sparql",
+    "value": "PREFIX cube: <https://cube.link/>\nPREFIX sh: <http://www.w3.org/ns/shacl#>\nPREFIX schema: <http://schema.org/>\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX qudt: <http://qudt.org/schema/qudt/>\n\nSELECT ?values ?label\nWHERE {\n  \n  VALUES ?cube { <https://environment.ld.admin.ch/foen/ubd000502/4> }\n  VALUES ?dimensions { <https://environment.ld.admin.ch/foen/ubd000502/sektorid> }\n  \n  ?cube a cube:Cube ;\n        cube:observationConstraint ?shape .\n  \n   ?shape a cube:Constraint;\n         sh:property ?property .\n         \n   ?property sh:path ?dimensions ;\n     sh:in ?list .\n\n  ?list rdf:rest*/rdf:first ?values .\n\n  ?values schema:name ?label .\n\nFILTER( lang(?label) = 'en')\n} \n#LIMIT 10",
+    "metadata": {}
+  },
+  {
+    "kind": 1,
+    "language": "markdown",
+    "value": "Now get one sample observation. That should be enough to create a proper SPARQL query. I feed it as Turtle, exactly like in this example. A table form might work as well.",
+    "metadata": {}
+  },
+  {
+    "kind": 2,
+    "language": "sparql",
+    "value": "PREFIX cube: <https://cube.link/>\nPREFIX sh: <http://www.w3.org/ns/shacl#>\nPREFIX schema: <http://schema.org/>\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX qudt: <http://qudt.org/schema/qudt/>\n\nCONSTRUCT {\n  ?sampleObservation ?p ?o\n} \nWHERE {\n  {\n    SELECT (SAMPLE(?observations) AS ?sampleObservation)\n    WHERE {\n      VALUES ?cube { <https://environment.ld.admin.ch/foen/ubd000502/4> }\n      ?cube a cube:Cube ;\n            cube:observationSet/cube:observation ?observations .\n    }\n  }\n  ?sampleObservation ?p ?o .\n}\n",
+    "metadata": {}
+  }
+]

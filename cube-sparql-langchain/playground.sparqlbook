@@ -1,0 +1,134 @@
+[
+  {
+    "kind": 2,
+    "language": "sparql",
+    "value": "SELECT DISTINCT ?r\nFROM <https://lindas.admin.ch/stadtzuerich/stat>\nWHERE {\n  ?cubes ?r ?o.\n  ?cubes a <https://cube.link/Cube> .\n} LIMIT 3",
+    "metadata": {}
+  },
+  {
+    "kind": 2,
+    "language": "sparql",
+    "value": "SELECT *\nFROM <https://lindas.admin.ch/stadtzuerich/stat>\nWHERE {?s ?p ?o}\nLIMIT 10\nOFFSET 100",
+    "metadata": {}
+  },
+  {
+    "kind": 2,
+    "language": "sparql",
+    "value": "SELECT ?x ?fname\nWHERE {?x  <http://www.w3.org/2001/vcard-rdf/3.0#FN>  ?fname}",
+    "metadata": {}
+  },
+  {
+    "kind": 2,
+    "language": "sparql",
+    "value": "SELECT DISTINCT ?s ?o\nFROM <https://lindas.admin.ch/stadtzuerich/stat>\nWHERE {\n  ?s <https://cube.link/observationSet> ?o;\n}",
+    "metadata": {}
+  },
+  {
+    "kind": 2,
+    "language": "sparql",
+    "value": "# playground\n\nPREFIX cube: <https://cube.link/>\nPREFIX sh: <http://www.w3.org/ns/shacl#>\nPREFIX schema: <http://schema.org/>\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX qudt: <http://qudt.org/schema/qudt/>\n\nSELECT DISTINCT ?o\nWHERE {\n    VALUES ?cube { <https://environment.ld.admin.ch/foen/ubd000502/4> }\n    ?cube a cube:Cube ;\n        cube:observationSet/cube:observation ?observation .\n    ?observation <https://environment.ld.admin.ch/foen/ubd000502/jahr> ?o.\n}",
+    "metadata": {}
+  },
+  {
+    "kind": 2,
+    "language": "sparql",
+    "value": "PREFIX cube: <https://cube.link/>\nPREFIX sh: <http://www.w3.org/ns/shacl#>\nPREFIX schema: <http://schema.org/>\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX qudt: <http://qudt.org/schema/qudt/>\n\nSELECT ?value ?property ?label\nWHERE {\n  \n  VALUES ?cube { <https://environment.ld.admin.ch/foen/ubd000502/4> }\n  VALUES ?dimensions { <https://environment.ld.admin.ch/foen/ubd000502/gas> }\n  \n  ?cube a cube:Cube ;\n        cube:observationConstraint ?shape ;\n        cube:observationSet ?set.\n  \n  ?shape a cube:Constraint;\n         sh:property ?property .\n         \n  ?property sh:path ?dimensions ;\n    sh:in ?list .\n\n  ?list rdf:rest*/rdf:first ?values .\n\n  ?values schema:name ?label ;\n          schema:value ?value .\n\n  ?set schema:datePublished \"2010\" .\n  \nFILTER( lang(?label) = 'en')\n}",
+    "metadata": {}
+  },
+  {
+    "kind": 2,
+    "language": "sparql",
+    "value": "# AI generated result\n\nPREFIX cube: <https://cube.link/>\nPREFIX sh: <http://www.w3.org/ns/shacl#>\nPREFIX schema: <http://schema.org/>\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX qudt: <http://qudt.org/schema/qudt/>\n\nSELECT ?dimensions ?dimensionsLabel ?value\nWHERE {\n  VALUES ?cube { <https://environment.ld.admin.ch/foen/ubd000502/4> }\n  \n  ?cube a cube:Cube ;\n        cube:observationConstraint ?shape ;\n        cube:observation ?observation .\n  \n   ?shape a cube:Constraint;\n         sh:property ?property .\n         \n   ?property sh:path ?dimensions ;\n    schema:name ?dimensionsLabel .\n  \n  ?observation ?dimensions ?value ;\n               schema:startDate ?startDate ;\n               schema:endDate ?endDate .\n  \n#   FILTER( ?startDate >= \"2010-01-01\"^^xsd:date && ?endDate <= \"2010-12-31\"^^xsd:date && ?dimensionsLabel = \"CO2 emissions\" )\n}",
+    "metadata": {}
+  },
+  {
+    "kind": 2,
+    "language": "sparql",
+    "value": "# AI generated result\n\nPREFIX cube: <https://cube.link/>\nPREFIX sh: <http://www.w3.org/ns/shacl#>\nPREFIX schema: <http://schema.org/>\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX qudt: <http://qudt.org/schema/qudt/>\n\nSELECT DISTINCT ?type ?dimensionsLabel\nWHERE {\n  \n  VALUES ?cube { <https://environment.ld.admin.ch/foen/ubd000502/4> }\n  \n  ?cube a cube:Cube ;\n        cube:observationConstraint ?shape .\n  \n   ?shape a cube:Constraint;\n         sh:property ?property .\n         \n   ?property sh:path ?dimensions ;\n    a ?type ;\n    qudt:scaleType ?scaleType ;\n    schema:name ?dimensionsLabel .\n\n}",
+    "metadata": {}
+  },
+  {
+    "kind": 2,
+    "language": "sparql",
+    "value": "# AI generated result\n\nPREFIX cube: <https://cube.link/>\nPREFIX schema: <http://schema.org/>\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n\nSELECT ?dimensions ?dimensionsLabel ?value\nWHERE {\n  VALUES ?cube { <https://environment.ld.admin.ch/foen/ubd000502/4> }\n  \n  ?cube a cube:Cube ;\n        cube:observation ?observation .\n  \n  ?observation cube:dataSet ?dataset ;\n               cube:measureType ?measureType ;\n               cube:dimensions ?dimensions ;\n               cube:measure ?value .\n  \n  ?dimensions rdf:type ?type ;\n              schema:name ?dimensionsLabel .\n  \n  FILTER( lang(?dimensionsLabel) = 'en' )\n  FILTER( ?dataset = \"2017\" )\n}",
+    "metadata": {}
+  },
+  {
+    "kind": 2,
+    "language": "sparql",
+    "value": "# NOTE: not yet analyzed what is wrong - first look - dimension is gas, not cO2 emission (maybe some semantic closeness filter would be needed? or sthn' simpler )\n# generally it looks pretty close to what we need (e.g. jahr type is properly detected as year)\n# this result might be corrupted (I added some additional, unnecessary part to system part of input(context))\n\n\nPREFIX cube: <https://cube.link/>\nPREFIX sh: <http://www.w3.org/ns/shacl#>\nPREFIX schema: <http://schema.org/>\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX qudt: <http://qudt.org/schema/qudt/>\n\nSELECT ?value\nWHERE {\n  \n  VALUES ?cube { <https://environment.ld.admin.ch/foen/ubd000502/4> }\n  VALUES ?dimensions { <https://environment.ld.admin.ch/foen/ubd000502/gas> }\n  \n  ?cube a cube:Cube ;\n        cube:observationConstraint ?shape .\n  \n   ?shape a cube:Constraint;\n         sh:property ?property .\n         \n   ?property sh:path ?dimensions ;\n     sh:in ?list .\n\n  ?list rdf:rest*/rdf:first ?values .\n\n  ?values schema:name ?label .\n  ?values <https://environment.ld.admin.ch/foen/ubd000502/jahr> \"2010\" .\n\nFILTER( lang(?label) = 'en' && ?label = \"Industry\")\n}",
+    "metadata": {}
+  },
+  {
+    "kind": 2,
+    "language": "sparql",
+    "value": "# NOTE: manually written query - year is probably not connected to values but something else?\n\nPREFIX cube: <https://cube.link/>\nPREFIX sh: <http://www.w3.org/ns/shacl#>\nPREFIX schema: <http://schema.org/>\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX qudt: <http://qudt.org/schema/qudt/>\n\nSELECT ?value ?label ?year\nWHERE {\n  \n  VALUES ?cube { <https://environment.ld.admin.ch/foen/ubd000502/4> }\n  VALUES ?dimensions { <https://environment.ld.admin.ch/foen/ubd000502/gas> }\n  \n  ?cube a cube:Cube ;\n        cube:observationConstraint ?shape .\n  \n   ?shape a cube:Constraint;\n         sh:property ?property .\n         \n   ?property sh:path ?dimensions ;\n     sh:in ?list .\n    ?list rdf:rest*/rdf:first ?values .\n    ?values schema:name ?label .\n    OPTIONAL{?values <https://environment.ld.admin.ch/foen/ubd000502/jahr> ?year} .\n    FILTER( lang(?label) = 'en')\n}\nLIMIT 10",
+    "metadata": {}
+  },
+  {
+    "kind": 2,
+    "language": "sparql",
+    "value": "# Give me query for retrieving values for CO2 emission dimension and industry label from year 2010\n# input label query and result, dimensions query and results\n\nPREFIX cube: <https://cube.link/>\nPREFIX sh: <http://www.w3.org/ns/shacl#>\nPREFIX schema: <http://schema.org/>\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX qudt: <http://qudt.org/schema/qudt/>\n\nSELECT ?values ?label\nWHERE {\n  \n  VALUES ?cube { <https://environment.ld.admin.ch/foen/ubd000502/4> }\n  VALUES ?dimensions { <https://environment.ld.admin.ch/foen/ubd000502/gas> } # key measure greenhouse\n  \n  ?cube a cube:Cube ;\n        cube:observationConstraint ?shape .\n  \n   ?shape a cube:Constraint;\n         sh:property ?property .\n         \n   ?property sh:path ?dimensions ;\n     sh:in ?list .\n\n  ?list rdf:rest*/rdf:first ?values .\n\n  ?values schema:name ?label .\n  \n  FILTER( lang(?label) = 'en') # maybe remove lang specific labels from context queries and do a more general, multilanguage query?\n  FILTER(?values = <https://environment.ld.admin.ch/vocabulary/ghg_emission_sectors_co2_ordinance/13>) # this is industry@en\n  \n  ?measureDimension a <https://cube.link/MeasureDimension> ; # selection by type seems ok, TO DISCUSS if focus needed on selecting by specific dimension like <https://environment.ld.admin.ch/foen/ubd000502/werte>\n                     cube:measure ?measure .\n  \n  ?measure a <https://cube.link/Measure> ;\n           cube:observation ?observation .\n  \n  ?observation <https://environment.ld.admin.ch/foen/ubd000502/jahr> ?year ;\n               <https://environment.ld.admin.ch/foen/ubd000502/sektorid> ?values .\n  \n  FILTER(?year = \"2010\")\n  \n}",
+    "metadata": {}
+  },
+  {
+    "kind": 2,
+    "language": "sparql",
+    "value": "PREFIX schema: <http://schema.org/>\nPREFIX cube: <https://cube.link/>\n\nSELECT ?value ?industryLabel\nWHERE {\n  ?observation a cube:Observation ;\n               <https://environment.ld.admin.ch/foen/ubd000502/sektorid> ?industry ;\n               <https://environment.ld.admin.ch/foen/ubd000502/gas> <https://ld.admin.ch/cube/dimension/pol01air/pol9> ;\n               <https://environment.ld.admin.ch/foen/ubd000502/jahr> \"2010\"^^<http://www.w3.org/2001/XMLSchema#gYear> ;\n               <https://environment.ld.admin.ch/foen/ubd000502/werte> ?value .\n  ?industry schema:name ?industryLabel .\n}\nLIMIT 100",
+    "metadata": {}
+  },
+  {
+    "kind": 2,
+    "language": "sparql",
+    "value": "",
+    "metadata": {}
+  },
+  {
+    "kind": 2,
+    "language": "sparql",
+    "value": "# NOTE best attempt to recover all key dimension labels\n\nPREFIX cube: <https://cube.link/>\nPREFIX sh: <http://www.w3.org/ns/shacl#>\nPREFIX schema: <http://schema.org/>\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX qudt: <http://qudt.org/schema/qudt/>\n\n# CONSTRUCT {\n#   # ?cube cube:observationConstraint ?shape.\n#   # ?shape sh:property ?property.\n#   # ?property sh:path ?dimension.\n#   # ?property sh:in ?list.\n#   ?list rdf:rest ?x.\n#   # ?values schema:name ?label.\n# }\nDESCRIBE ?cube ?shape ?property ?list ?links ?values\nWHERE {\n  \n  VALUES ?cube { <https://environment.ld.admin.ch/foen/ubd000502/4> }\n  \n  ?cube a cube:Cube ;\n        cube:observationConstraint ?shape .\n  \n   ?shape a cube:Constraint;\n         sh:property ?property .\n\n   ?property a cube:KeyDimension;\n      sh:path ?dimension ;\n      sh:in ?list .\n    # ?list ?p ?values.\n\n  ?list rdf:rest*/rdf:rest ?links.\n  ?list rdf:rest*/rdf:first ?values.\n\n  # ?values schema:name ?label ;\n\n# FILTER( lang(?label) = 'en')\n}",
+    "metadata": {}
+  },
+  {
+    "kind": 2,
+    "language": "sparql",
+    "value": "PREFIX cube: <https://cube.link/>\nPREFIX sh: <http://www.w3.org/ns/shacl#>\nPREFIX schema: <http://schema.org/>\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX qudt: <http://qudt.org/schema/qudt/>\n\nSELECT {\n      \n}\nDESCRIBE ?cube #?shape ?property ?list ?links ?values\nWHERE {\n  VALUES ?cube { <https://environment.ld.admin.ch/foen/ubd000502/4> }\n  \n  ?cube a cube:Cube ;\n        cube:observationConstraint ?shape .\n  \n#    ?shape a cube:Constraint;\n#          sh:property ?property .\n\n#    ?property a cube:KeyDimension;\n#       sh:path ?dimension ;\n#       sh:in ?list .\n\n#   ?list rdf:rest*/rdf:rest ?links.\n#   ?list rdf:rest*/rdf:first ?values.\n      ?cube schema:name ?cube_name.\n}",
+    "metadata": {}
+  },
+  {
+    "kind": 2,
+    "language": "sparql",
+    "value": "PREFIX cube: <https://cube.link/>\nPREFIX sh: <http://www.w3.org/ns/shacl#>\nPREFIX schema: <http://schema.org/>\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX qudt: <http://qudt.org/schema/qudt/>\n\nSELECT *\nWHERE {\n  ?cube a cube:Cube ;\n            cube:observationSet/cube:observation ?observation ;\n            ?r ?o.\n  ?observation rdf:type cube:Observation ;\n               <https://environment.ld.admin.ch/foen/ubd000502/gas> <https://ld.admin.ch/cube/dimension/pol01air/pol9> ;\n               <https://environment.ld.admin.ch/foen/ubd000502/sektorid> <https://environment.ld.admin.ch/vocabulary/ghg_emission_sectors_co2_ordinance/13> ;\n               <https://environment.ld.admin.ch/foen/ubd000502/jahr> \"2010\"^^<http://www.w3.org/2001/XMLSchema#gYear> ;\n               <https://environment.ld.admin.ch/foen/ubd000502/werte> ?value .\n  FILTER(lang(?o) = 'en')\n}",
+    "metadata": {}
+  },
+  {
+    "kind": 2,
+    "language": "sparql",
+    "value": "PREFIX schema: <http://schema.org/>\nPREFIX qudt: <http://qudt.org/schema/qudt/>\nPREFIX sh: <http://www.w3.org/ns/shacl/>\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX cube: <https://cube.link/>\n\nSELECT ?observation ?value ?year\nWHERE {\n  ?observation a cube:Observation ;\n               cube:observedBy <https://ld.admin.ch/office/VII.1.7> ;\n               <https://environment.ld.admin.ch/foen/ubd000502/sektorid> <https://environment.ld.admin.ch/vocabulary/ghg_emission_sectors_co2_ordinance/131> ;\n               <https://environment.ld.admin.ch/foen/ubd000502/gas> <https://ld.admin.ch/cube/dimension/pol01air/pol9> ;\n               <https://environment.ld.admin.ch/foen/ubd000502/jahr> ?year ;\n               <https://environment.ld.admin.ch/foen/ubd000502/werte> ?value .\n  FILTER (?year >= \"2009\"^^<http://www.w3.org/2001/XMLSchema#gYear> && ?year <= \"2011\"^^<http://www.w3.org/2001/XMLSchema#gYear>)\n}",
+    "metadata": {}
+  },
+  {
+    "kind": 2,
+    "language": "sparql",
+    "value": "PREFIX schema: <http://schema.org/>\nPREFIX qudt: <http://qudt.org/schema/qudt/>\nPREFIX sh: <http://www.w3.org/ns/shacl/>\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX cube: <https://cube.link/>\n\nSELECT (SUM(?emission) as ?s) ?cube\nWHERE {\n  ?cube a cube:Cube ; # specified cube is missing, maybe llm is trained on rdf files, so has no notion of different datasets, e.g. cubes\n            cube:observationSet/cube:observation ?observation . \n  ?observation a cube:Observation ;\n               <https://environment.ld.admin.ch/foen/ubd000502/sektorid> <https://environment.ld.admin.ch/vocabulary/ghg_emission_sectors_co2_ordinance/13> ;\n               <https://environment.ld.admin.ch/foen/ubd000502/gas> <https://ld.admin.ch/cube/dimension/pol01air/pol9> ;\n               <https://environment.ld.admin.ch/foen/ubd000502/jahr> ?year ;\n               <https://environment.ld.admin.ch/foen/ubd000502/werte> ?emission .\n  FILTER (?year >= \"2009\"^^<http://www.w3.org/2001/XMLSchema#gYear> && ?year <= \"2011\"^^<http://www.w3.org/2001/XMLSchema#gYear>)\n}\nGROUP BY ?cube",
+    "metadata": {}
+  },
+  {
+    "kind": 2,
+    "language": "sparql",
+    "value": "# How to get cube with its structure\n\nPREFIX cube: <https://cube.link/>\nPREFIX sh: <http://www.w3.org/ns/shacl#>\nPREFIX schema: <http://schema.org/>\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX qudt: <http://qudt.org/schema/qudt/>\n\nCONSTRUCT {\n    # ?cube cube:observationConstraint ?o\n    ?o ?p ?oo\n}\nWHERE {\n    VALUES ?cube { <https://environment.ld.admin.ch/foen/ubd000502/4> }\n    ?cube a cube:Cube;\n        cube:observationSet ?o.\n\n    cube:observationSet/cube:observation ?observations .\n    ?o ?p ?oo.\n    # ?p a cube:observationConstraint.\n    \n\n}",
+    "metadata": {}
+  },
+  {
+    "kind": 2,
+    "language": "sparql",
+    "value": "PREFIX cube: <https://cube.link/>\nPREFIX schema: <http://schema.org/>\nPREFIX qudt: <http://qudt.org/schema/qudt/>\nPREFIX sh: <http://www.w3.org/ns/shacl#>\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n\nSELECT ?value ?year ?observation\nWHERE {\n  ?observation a cube:Observation ;\n               cube:observedBy <https://ld.admin.ch/office/VII.1.7> ;\n               <https://environment.ld.admin.ch/foen/ubd000502/sektorid> <https://environment.ld.admin.ch/vocabulary/ghg_emission_sectors_co2_ordinance/13> ;\n               <https://environment.ld.admin.ch/foen/ubd000502/gas> <https://ld.admin.ch/cube/dimension/pol01air/pol9> ;\n               <https://environment.ld.admin.ch/foen/ubd000502/jahr> ?year ;\n               <https://environment.ld.admin.ch/foen/ubd000502/werte> ?value .\n  FILTER (?year >= \"2009\"^^<http://www.w3.org/2001/XMLSchema#gYear> && ?year <= \"2011\"^^<http://www.w3.org/2001/XMLSchema#gYear>)\n}",
+    "metadata": {}
+  },
+  {
+    "kind": 2,
+    "language": "sparql",
+    "value": "PREFIX schema: <http://schema.org/>\nPREFIX qudt: <http://qudt.org/schema/qudt/>\nPREFIX sh: <http://www.w3.org/ns/shacl#>\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX cube: <https://cube.link/>\n\nSELECT (SUM(?value) AS ?totalEmission) ?observation\nWHERE {\n  ?observation a cube:Observation ;\n    <https://environment.ld.admin.ch/foen/ubd000502/sektorid> <https://environment.ld.admin.ch/vocabulary/ghg_emission_sectors_co2_ordinance/13> ;\n    <https://environment.ld.admin.ch/foen/ubd000502/gas> <https://ld.admin.ch/cube/dimension/pol01air/pol9> ;\n    <https://environment.ld.admin.ch/foen/ubd000502/jahr> ?year ;\n    <https://environment.ld.admin.ch/foen/ubd000502/werte> ?value .\n  FILTER (?year >= \"2009\"^^<http://www.w3.org/2001/XMLSchema#gYear> && ?year <= \"2011\"^^<http://www.w3.org/2001/XMLSchema#gYear>)\n}\nGROUP BY ?observation",
+    "metadata": {}
+  }
+]
