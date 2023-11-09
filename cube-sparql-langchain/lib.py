@@ -93,7 +93,7 @@ def create_query_generation_chain(api_key: str, handler: BaseCallbackHandler, te
     PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
     PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 
-    SELECT *
+    SELECT (*)
     WHERE {{
     {cube} a cube:Cube;
         cube:observationSet ?observationSet.
@@ -104,7 +104,7 @@ def create_query_generation_chain(api_key: str, handler: BaseCallbackHandler, te
     ?observation a cube:Observation.
     }}
     """
-    human_template = f"Modify this query: {query_template}\n to get {{question}} for this cube {{cube}}"
+    human_template = f"Modify this query: {query_template}\n to answer folloing question: \"{{question}}\" for this cube {{cube}}"
 
     prompt = ChatPromptTemplate.from_messages([
         ("system", sample_description),
