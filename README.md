@@ -37,19 +37,19 @@ cd cube-sparql-llm
 python -m venv .venv
 ```
 
-6. Activate your virtual environment
+5. Activate your virtual environment
 
 ```
 source .venv/bin/activate
 ```
 
-7. Install dependencies using poetry in virtual environment
+6. Install dependencies using poetry in virtual environment
 
 ```
 poetry install --no-root
 ```
 
-8. Run it within Visual Studio Code
+7. Run it within Visual Studio Code
 
 The optimal experience is through Visual Studio Code equipped with the [Jupyter extension](https://code.visualstudio.com/docs/datascience/jupyter-notebooks) . This setup allows seamless interaction with the `playground/full_pipeline.ipynb` notebook, our playground for our hands-on adventure.
 
