@@ -8,7 +8,7 @@ from langchain.prompts.chat import ChatPromptTemplate
 
 
 def run_query(query: str, return_format: str = SPARQLWrapper.JSON):
-    sparql = SPARQLWrapper.SPARQLWrapper(endpoint="https://ld.stadt-zuerich.ch/query") 
+    sparql = SPARQLWrapper.SPARQLWrapper(endpoint="https://ld.admin.ch/query") 
     sparql.setReturnFormat(return_format)
     sparql.setHTTPAuth(SPARQLWrapper.DIGEST)
     sparql.setMethod(SPARQLWrapper.POST)
