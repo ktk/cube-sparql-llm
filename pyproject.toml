@@ -8,11 +8,11 @@ packages = [{include = "llm_playground"}]
 
 [tool.poetry.dependencies]
 python = "^3.10"
-openai = "^0.28.1"
-langchain = {extras = ["openai"], version = "^0.0.306"}
+openai = "1.7.1"
 sparqlwrapper = "^2.0.0"
 loguru = "^0.7.2"
 python-dotenv = "^1.0.0"
+langchain = "^0.1.0"
 
 [tool.poetry.group.dev.dependencies]
 ipykernel = "^6.25.2"

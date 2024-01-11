@@ -8,7 +8,7 @@ from langchain.prompts.chat import ChatPromptTemplate
 
 
 def run_query(query: str, return_format: str = SPARQLWrapper.JSON):
-    sparql = SPARQLWrapper.SPARQLWrapper(endpoint="https://ld.admin.ch/query") 
+    sparql = SPARQLWrapper.SPARQLWrapper(endpoint="https://ld.admin.ch/query")
     sparql.setReturnFormat(return_format)
     sparql.setHTTPAuth(SPARQLWrapper.DIGEST)
     sparql.setMethod(SPARQLWrapper.POST)
@@ -30,7 +30,7 @@ def fetch_cubes_descriptions() -> str:
         ?cube a cube:Cube;
                 schema:name ?label;
                 schema:description ?description.
-        } 
+        }
         WHERE {
             ?cube a cube:Cube ;
                     schema:name ?label ;
@@ -52,7 +52,7 @@ def fetch_cubes_descriptions() -> str:
 
 
 def create_cube_selection_chain(api_key: str, handler: BaseCallbackHandler, temperature: float = 0.5, top_p: float = 0.5) -> LLMChain:
-    cube_selection_model = ChatOpenAI(openai_api_key=api_key, model="gpt-3.5-turbo-16k", temperature=temperature, top_p=top_p)
+    cube_selection_model = ChatOpenAI(openai_api_key=api_key, model="gpt-3.5-turbo-16k", temperature=temperature, model_kwargs={"top_p" :top_p})
 
     cubes_description = """
     Given following data cubes with its labels and description:
@@ -69,10 +69,10 @@ def create_cube_selection_chain(api_key: str, handler: BaseCallbackHandler, temp
     cube_selection_chain = LLMChain(prompt=cube_selection_prompt, llm=cube_selection_model, callbacks=[handler])
 
     return cube_selection_chain
-    
+
 
 def create_query_generation_chain(api_key: str, handler: BaseCallbackHandler, temperature: float = 0.2, top_p: float = 0.1) -> LLMChain:
-    model = ChatOpenAI(openai_api_key=api_key, model="gpt-3.5-turbo", temperature=temperature, top_p=top_p)
+    model = ChatOpenAI(openai_api_key=api_key, model="gpt-3.5-turbo", temperature=temperature, model_kwargs={"top_p" :top_p})
 
     sample_description = """
     Given cube and its sample observation::
@@ -100,7 +100,7 @@ def create_query_generation_chain(api_key: str, handler: BaseCallbackHandler, te
 
     ?observationSet a cube:ObservationSet;
         cube:observation ?observation.
-    
+
     ?observation a cube:Observation.
     }}
     """
@@ -180,13 +180,13 @@ def fetch_dimensions_triplets(cube: str) -> str:
             SELECT ?values ?label
             WHERE {{
                 VALUES ?cube {{ {cube} }}
-                
+
                 ?cube a cube:Cube ;
                     cube:observationConstraint ?shape .
-                
+
                 ?shape a cube:Constraint;
                     sh:property ?property .
-                    
+
                 ?property sh:path ?dimensions ;
                 sh:in ?list .
 
@@ -196,7 +196,7 @@ def fetch_dimensions_triplets(cube: str) -> str:
 
                 FILTER( lang(?label) = 'en')
             }}
-        }} 
+        }}
     """
 
     raw_result = run_query(query, return_format=SPARQLWrapper.N3)
